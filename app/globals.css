@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
+  --pink-light: 255, 240, 245;
+  --pink-medium: 255, 182, 193;
+  --pink-deep: 219, 39, 119;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+.text-deep-pink {
+  color: rgb(var(--pink-deep));
+}
+
+.bg-light-pink {
+  background-color: rgb(var(--pink-light));
+}
+
+.bg-medium-pink {
+  background-color: rgb(var(--pink-medium));
+}
+
+.gsap-reveal {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Custom scrollbar for the chat box */
+.chat-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: #db2777;
+  border-radius: 10px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #be185d;
+}
