@@ -136,7 +136,7 @@ export default function MedicineStore() {
                   </CardContent>
                   <CardFooter className="flex justify-between items-center">
                     <span className="text-pink-600 font-bold">${medicine.price.toFixed(2)}</span>
-                    <Button size="sm" className="bg-pink-600 hover:bg-pink-700 rounded-full">
+                    <Button size="sm" className="bg-pink-500 hover:bg-pink-700 rounded-full py-2">
                       Add to Cart
                     </Button>
                   </CardFooter>

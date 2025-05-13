@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,9 +11,20 @@
   --pink-deep: 219, 39, 119;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+@layer base {
+  body {
+    @apply antialiased;
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-rgb));
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
+}
+
+.font-serif {
+  font-family: 'Playfair Display', serif;
 }
 
 .text-deep-pink {
@@ -27,9 +39,21 @@ body {
   background-color: rgb(var(--pink-medium));
 }
 
-.gsap-reveal {
+/* Remove the hidden state */
+.hero-animate {
   opacity: 0;
-  visibility: hidden;
+}
+
+/* Custom button styles */
+.btn-primary {
+  @apply rounded-full bg-pink-600 text-white px-6 py-3 font-medium 
+         transition-all duration-300 hover:bg-pink-700 
+         hover:shadow-lg hover:shadow-pink-200;
+}
+
+/* Card hover effect */
+.service-card {
+  @apply transition-all duration-300;
 }
 
 /* Custom scrollbar for the chat box */

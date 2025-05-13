@@ -1,12 +1,20 @@
+"use client"
+
 import Link from "next/link"
 import { Heart, Mail, Phone, MapPin } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  const pathname = usePathname()
+  
+  // Pages that have a sidebar
+  const pagesWithSidebar = ['/services', '/medicine-store', '/medicine-dates', '/skin-disease-classification', '/prescription-analyzer']
+  const hasSidebar = pagesWithSidebar.includes(pathname)
 
   return (
-    <footer className="bg-gray-50 pt-12 pb-8 border-t border-gray-200">
-      <div className="container mx-auto px-4">
+    <footer className={`bg-gray-50 pt-12 pb-8 border-t border-gray-200 ${hasSidebar ? 'pl-[70px]' : ''}`}>
+      <div className="container mx-auto px-4 max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* About Section */}
           <div>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { gsap } from "gsap"
-import { Eye, EyeOff, Mail, Lock } from "lucide-react"
+import { Eye, EyeOff, Mail, Lock, Heart } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -25,7 +25,7 @@ export default function LoginPage() {
     gsap.fromTo(
       ".login-anim",
       { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: "power2.out" },
+      { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: "back.out(1.7)" }
     )
   }, [])
 
@@ -41,31 +41,38 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8 login-anim">
-          <Link href="/" className="inline-block">
-            <h1 className="text-3xl font-bold text-pink-600">MomCare</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-pink-50 to-white px-4 py-12">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center login-anim">
+          <Link href="/" className="inline-block group">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Heart className="h-8 w-8 text-pink-600 group-hover:scale-110 transition-transform duration-300" />
+              <h1 className="text-4xl font-bold text-pink-600 font-serif">MomCare</h1>
+            </div>
+            <p className="text-gray-600 text-lg">Your pregnancy companion</p>
           </Link>
-          <p className="mt-2 text-gray-600">Your pregnancy companion</p>
         </div>
 
-        <Card className="login-anim">
-          <CardHeader>
-            <CardTitle className="text-2xl text-center">Welcome Back</CardTitle>
-            <CardDescription className="text-center">Sign in to your account to continue</CardDescription>
+        <Card className="login-anim border-2 hover:border-pink-100 transition-all duration-300">
+          <CardHeader className="space-y-2 text-center">
+            <CardTitle className="text-2xl font-serif">Welcome Back</CardTitle>
+            <CardDescription className="text-base">
+              Sign in to your account to continue your pregnancy journey
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium">
+                  Email
+                </Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     id="email"
                     type="email"
                     placeholder="name@example.com"
-                    className="pl-10"
+                    className="pl-10 h-12 rounded-xl border-gray-200 focus:border-pink-300 focus:ring focus:ring-pink-200 focus:ring-opacity-50 transition-all duration-200"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -75,68 +82,85 @@ export default function LoginPage() {
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link href="/forgot-password" className="text-xs text-pink-600 hover:text-pink-700">
+                  <Label htmlFor="password" className="text-sm font-medium">
+                    Password
+                  </Label>
+                  <Link 
+                    href="/forgot-password" 
+                    className="text-sm text-pink-600 hover:text-pink-700 hover:underline transition-colors duration-200"
+                  >
                     Forgot password?
                   </Link>
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="pl-10"
+                    className="pl-10 h-12 rounded-xl border-gray-200 focus:border-pink-300 focus:ring focus:ring-pink-200 focus:ring-opacity-50 transition-all duration-200"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 transition-colors duration-200"
                     onClick={() => setShowPassword(!showPassword)}
                     tabIndex="-1"
                   >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
               </div>
 
               <div className="flex items-center space-x-2">
-                <Checkbox id="remember" checked={rememberMe} onCheckedChange={(checked) => setRememberMe(checked)} />
+                <Checkbox 
+                  id="remember" 
+                  checked={rememberMe} 
+                  onCheckedChange={(checked) => setRememberMe(checked)}
+                  className="text-pink-600 focus:ring-pink-600"
+                />
                 <label
                   htmlFor="remember"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none cursor-pointer select-none"
                 >
                   Remember me
                 </label>
               </div>
 
-              <Button type="submit" className="w-full bg-pink-600 hover:bg-pink-700" disabled={isLoading}>
+              <Button 
+                type="submit" 
+                className="w-full h-12 text-base rounded-xl bg-pink-600 hover:bg-pink-700 transition-colors duration-200 shadow-lg hover:shadow-xl disabled:opacity-70"
+                disabled={isLoading}
+              >
                 {isLoading ? (
-                  <>
-                    <span className="mr-2">Signing in</span>
-                    <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  </>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Signing in...</span>
+                  </div>
                 ) : (
                   "Sign in"
                 )}
               </Button>
             </form>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <Separator className="w-full" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-gray-500">Or continue with</span>
+                  <span className="bg-white px-4 text-gray-500">Or continue with</span>
                 </div>
               </div>
 
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <Button variant="outline" className="w-full">
-                  <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <Button 
+                  variant="outline" 
+                  className="h-12 rounded-xl hover:bg-gray-50 hover:border-pink-200 transition-all duration-200"
+                >
+                  <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
                     <path
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                       fill="#4285F4"
@@ -156,8 +180,11 @@ export default function LoginPage() {
                   </svg>
                   Google
                 </Button>
-                <Button variant="outline" className="w-full">
-                  <svg className="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                <Button 
+                  variant="outline" 
+                  className="h-12 rounded-xl hover:bg-gray-50 hover:border-pink-200 transition-all duration-200"
+                >
+                  <svg className="mr-2 h-5 w-5" fill="#1877F2" viewBox="0 0 24 24">
                     <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
                   </svg>
                   Facebook
@@ -166,9 +193,9 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex justify-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-gray-600">
               Don't have an account?{" "}
-              <Link href="/signup" className="text-pink-600 hover:text-pink-700 font-medium">
+              <Link href="/signup" className="text-pink-600 hover:text-pink-700 font-medium hover:underline transition-colors duration-200">
                 Sign up
               </Link>
             </p>

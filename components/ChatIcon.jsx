@@ -1,22 +1,38 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { MessageCircle, X, Send } from "lucide-react"
+import { MessageCircle, X, Send, Bot } from "lucide-react"
 import { gsap } from "gsap"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import Image from "next/image"
 
 export default function ChatIcon() {
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [isTyping, setIsTyping] = useState(false)
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! How can I help you with your pregnancy journey today?", isUser: false },
+    { 
+      id: 1, 
+      text: "Hello! I'm your MomCare Assistant. How can I help you with your pregnancy journey today?", 
+      isUser: false 
+    },
   ])
   const [newMessage, setNewMessage] = useState("")
   const chatBoxRef = useRef(null)
   const messagesEndRef = useRef(null)
+  const chatButtonRef = useRef(null)
 
   useEffect(() => {
+    // Floating animation for chat button
+    gsap.to(chatButtonRef.current, {
+      y: -10,
+      duration: 1.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut"
+    })
+
     if (isChatOpen) {
       gsap.fromTo(
         chatBoxRef.current,
@@ -28,9 +44,9 @@ export default function ChatIcon() {
         {
           opacity: 1,
           scale: 1,
-          duration: 0.3,
-          ease: "power2.out",
-        },
+          duration: 0.4,
+          ease: "back.out(1.7)",
+        }
       )
     }
   }, [isChatOpen])
@@ -52,47 +68,58 @@ export default function ChatIcon() {
     const userMessage = { id: Date.now(), text: newMessage, isUser: true }
     setMessages([...messages, userMessage])
     setNewMessage("")
+    setIsTyping(true)
 
     // Simulate bot response after a short delay
     setTimeout(() => {
       const botResponses = [
-        "I understand your concern. That's common during pregnancy.",
-        "Have you discussed this with your doctor?",
-        "I recommend tracking this symptom and mentioning it at your next appointment.",
-        "Many pregnant women experience this. Try to rest and stay hydrated.",
-        "That's a great question! Let me help you find some information.",
+        "I understand your concern. That's common during pregnancy. Would you like me to provide more information about this?",
+        "Have you discussed this with your doctor? I can help you prepare a list of questions for your next appointment.",
+        "I recommend tracking this symptom and mentioning it at your next appointment. Would you like me to help you set up a reminder?",
+        "Many pregnant women experience this. Try to rest and stay hydrated. Would you like some tips for managing this?",
+        "That's a great question! Let me help you find some reliable information from medical sources.",
       ]
       const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)]
+      setIsTyping(false)
       setMessages((prev) => [...prev, { id: Date.now(), text: randomResponse, isUser: false }])
-    }, 1000)
+    }, 2000)
   }
 
   return (
     <>
       {/* Chat Icon */}
       <Button
+        ref={chatButtonRef}
         onClick={toggleChat}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-pink-600 hover:bg-pink-700 p-0 shadow-lg"
+        className="fixed bottom-8 right-8 z-50 w-16 h-16 rounded-full bg-pink-600 hover:bg-pink-700 p-0 shadow-xl hover:shadow-2xl transition-shadow duration-300"
         aria-label="Open chat"
       >
-        <MessageCircle size={24} />
+        <MessageCircle size={28} className="text-white" />
       </Button>
 
       {/* Chat Box */}
       {isChatOpen && (
         <Card
           ref={chatBoxRef}
-          className="fixed bottom-24 right-6 z-50 w-full max-w-sm shadow-xl flex flex-col"
-          style={{ height: "calc(100vh - 200px)", maxHeight: "500px" }}
+          className="fixed bottom-28 right-8 z-50 w-[400px] shadow-2xl flex flex-col bg-white rounded-2xl overflow-hidden"
+          style={{ height: "600px" }}
         >
           {/* Chat Header */}
-          <CardHeader className="p-4 border-b bg-pink-600 text-white rounded-t-lg">
+          <CardHeader className="p-4 border-b bg-gradient-to-r from-pink-600 to-pink-500 text-white">
             <div className="flex items-center justify-between">
-              <h3 className="font-medium">MomCare Assistant</h3>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <Bot size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">MomCare Assistant</h3>
+                  <p className="text-sm text-pink-100">Always here to help</p>
+                </div>
+              </div>
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:text-gray-200 hover:bg-pink-700"
+                className="text-white hover:text-white hover:bg-white/10 rounded-full"
                 onClick={toggleChat}
                 aria-label="Close chat"
               >
@@ -102,35 +129,62 @@ export default function ChatIcon() {
           </CardHeader>
 
           {/* Chat Messages */}
-          <CardContent className="flex-1 p-4 overflow-y-auto chat-scrollbar">
+          <CardContent className="flex-1 p-4 overflow-y-auto chat-scrollbar space-y-4">
             {messages.map((message) => (
-              <div key={message.id} className={`mb-4 flex ${message.isUser ? "justify-end" : "justify-start"}`}>
+              <div
+                key={message.id}
+                className={`flex ${message.isUser ? "justify-end" : "justify-start"} items-end gap-2`}
+              >
+                {!message.isUser && (
+                  <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
+                    <Bot size={18} className="text-pink-600" />
+                  </div>
+                )}
                 <div
-                  className={`max-w-[80%] p-3 rounded-lg ${
+                  className={`max-w-[80%] p-3 rounded-2xl ${
                     message.isUser
-                      ? "bg-pink-600 text-white rounded-tr-none"
-                      : "bg-gray-100 text-gray-800 rounded-tl-none"
+                      ? "bg-pink-600 text-white rounded-br-none"
+                      : "bg-gray-100 text-gray-800 rounded-bl-none"
                   }`}
                 >
                   {message.text}
                 </div>
               </div>
             ))}
+            {isTyping && (
+              <div className="flex items-end gap-2">
+                <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center">
+                  <Bot size={18} className="text-pink-600" />
+                </div>
+                <div className="bg-gray-100 px-4 py-2 rounded-2xl rounded-bl-none">
+                  <div className="flex gap-1">
+                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></span>
+                    <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></span>
+                  </div>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </CardContent>
 
           {/* Chat Input */}
-          <CardFooter className="p-4 border-t">
-            <form onSubmit={handleSendMessage} className="flex items-center w-full">
+          <CardFooter className="p-4 border-t bg-white">
+            <form onSubmit={handleSendMessage} className="flex items-center w-full gap-2">
               <Input
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type your message..."
-                className="flex-1 rounded-r-none focus-visible:ring-pink-500"
+                className="flex-1 rounded-full border-gray-200 focus-visible:ring-pink-500 focus-visible:ring-offset-2"
               />
-              <Button type="submit" className="rounded-l-none bg-pink-600 hover:bg-pink-700" aria-label="Send message">
-                <Send size={20} />
+              <Button 
+                type="submit" 
+                size="icon"
+                className="rounded-full bg-pink-600 hover:bg-pink-700 transition-colors duration-200" 
+                aria-label="Send message"
+              >
+                <Send size={18} />
               </Button>
             </form>
           </CardFooter>

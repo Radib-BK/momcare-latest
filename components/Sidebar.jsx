@@ -13,7 +13,7 @@ export default function Sidebar() {
   const menuItems = [
     { id: "medicine-store", title: "Medicine Store", icon: Pill },
     { id: "medicine-dates", title: "Medicine Dates", icon: Calendar },
-    { id: "skin-disease-classification", title: "Skin Disease Classification", icon: Scan },
+    { id: "skin-disease-classification", title: "Skin Disease", icon: Scan },
     { id: "prescription-analyzer", title: "Prescription Analyzer", icon: FileText },
   ]
 
