@@ -5,7 +5,7 @@ import Link from "next/link"
 import { gsap } from "gsap"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Pill, Calendar, Scan, FileText, ArrowRight, Shield } from "lucide-react"
+import { Pill, Calendar, Scan, FileText, ArrowRight, Shield, Heart } from "lucide-react"
 import Sidebar from "@/components/Sidebar"
 import { Playfair_Display } from "next/font/google"
 
@@ -101,6 +101,13 @@ export default function ServicesPage() {
       icon: <FileText className="h-8 w-8" />,
       color: "green",
     },
+    {
+      id: "find-donor",
+      title: "Find Blood Donor",
+      description: "Locate nearby blood donors in real-time. Connect with verified donors and view their blood type and contact information on an interactive map.",
+      icon: <Heart className="h-8 w-8" />,
+      color: "red",
+    },
   ]
 
   const getGradient = (color) => {
@@ -109,6 +116,7 @@ export default function ServicesPage() {
       purple: "from-purple-500 to-violet-500",
       blue: "from-blue-500 to-cyan-500",
       green: "from-green-500 to-emerald-500",
+      red: "from-red-500 to-rose-600",
     }
     return gradients[color]
   }

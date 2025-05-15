@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { MessageCircle, X, Send, Bot } from "lucide-react"
+import { MessageCircle, X, Send, Bot, Image as ImageIcon } from "lucide-react"
 import { gsap } from "gsap"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,11 +14,13 @@ export default function ChatIcon() {
   const [messages, setMessages] = useState([
     { 
       id: 1, 
-      text: "Hello! I'm your MomCare Assistant. How can I help you with your pregnancy journey today?", 
+      type: "text",
+      content: "Hello! I'm your MomCare Assistant. How can I help you with your pregnancy journey today?", 
       isUser: false 
     },
   ])
   const [newMessage, setNewMessage] = useState("")
+  const fileInputRef = useRef(null)
   const chatBoxRef = useRef(null)
   const messagesEndRef = useRef(null)
   const chatButtonRef = useRef(null)
@@ -65,7 +67,12 @@ export default function ChatIcon() {
     if (newMessage.trim() === "") return
 
     // Add user message
-    const userMessage = { id: Date.now(), text: newMessage, isUser: true }
+    const userMessage = { 
+      id: Date.now(), 
+      type: "text",
+      content: newMessage, 
+      isUser: true 
+    }
     setMessages([...messages, userMessage])
     setNewMessage("")
     setIsTyping(true)
@@ -81,8 +88,49 @@ export default function ChatIcon() {
       ]
       const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)]
       setIsTyping(false)
-      setMessages((prev) => [...prev, { id: Date.now(), text: randomResponse, isUser: false }])
+      setMessages((prev) => [...prev, { 
+        id: Date.now(), 
+        type: "text",
+        content: randomResponse, 
+        isUser: false 
+      }])
     }, 2000)
+  }
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Create object URL for the uploaded image
+    const imageUrl = URL.createObjectURL(file)
+
+    // Add image message
+    const imageMessage = {
+      id: Date.now(),
+      type: "image",
+      content: imageUrl,
+      isUser: true
+    }
+    setMessages([...messages, imageMessage])
+
+    // Reset file input
+    e.target.value = ""
+
+    // Simulate bot response
+    setIsTyping(true)
+    setTimeout(() => {
+      setIsTyping(false)
+      setMessages((prev) => [...prev, { 
+        id: Date.now(), 
+        type: "text",
+        content: "I've received your image. Is there anything specific you'd like me to look at?", 
+        isUser: false 
+      }])
+    }, 2000)
+  }
+
+  const triggerImageUpload = () => {
+    fileInputRef.current?.click()
   }
 
   return (
@@ -141,13 +189,27 @@ export default function ChatIcon() {
                   </div>
                 )}
                 <div
-                  className={`max-w-[80%] p-3 rounded-2xl ${
-                    message.isUser
-                      ? "bg-pink-600 text-white rounded-br-none"
-                      : "bg-gray-100 text-gray-800 rounded-bl-none"
+                  className={`max-w-[80%] ${
+                    message.type === "text" 
+                      ? `p-3 rounded-2xl ${
+                          message.isUser
+                            ? "bg-pink-600 text-white rounded-br-none"
+                            : "bg-gray-100 text-gray-800 rounded-bl-none"
+                        }`
+                      : "rounded-lg overflow-hidden"
                   }`}
                 >
-                  {message.text}
+                  {message.type === "text" ? (
+                    message.content
+                  ) : (
+                    <Image
+                      src={message.content}
+                      alt="Uploaded image"
+                      width={200}
+                      height={200}
+                      className="object-contain max-h-[200px] w-auto"
+                    />
+                  )}
                 </div>
               </div>
             ))}
@@ -171,6 +233,23 @@ export default function ChatIcon() {
           {/* Chat Input */}
           <CardFooter className="p-4 border-t bg-white">
             <form onSubmit={handleSendMessage} className="flex items-center w-full gap-2">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                accept="image/*"
+                className="hidden"
+              />
+              <Button
+                type="button"
+                size="icon"
+                variant="ghost"
+                onClick={triggerImageUpload}
+                className="rounded-full hover:bg-pink-50"
+                aria-label="Upload image"
+              >
+                <ImageIcon size={18} className="text-pink-600" />
+              </Button>
               <Input
                 type="text"
                 value={newMessage}

@@ -148,7 +148,7 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-pink-50">
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-pink-200">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           <Link 

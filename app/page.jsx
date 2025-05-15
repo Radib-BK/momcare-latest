@@ -6,7 +6,7 @@ import Link from "next/link"
 import ServiceCard from "@/components/ServiceCard"
 import { gsap } from "gsap"
 import { Button } from "@/components/ui/button"
-import { Heart, ArrowRight, Star, Users, Clock, Award } from "lucide-react"
+import { Heart, ArrowRight, Star, Users, Clock, Award, MapPin } from "lucide-react"
 import { Playfair_Display } from "next/font/google"
 
 const playfair = Playfair_Display({ 
@@ -103,12 +103,18 @@ export default function Home() {
       description: "Understand your prescriptions and medication instructions.",
       icon: "file-text",
     },
+    {
+      id: "find-donor",
+      title: "Find Blood Donor",
+      description: "Locate nearby blood donors quickly with our interactive map.",
+      icon: "map-pin",
+    }
   ]
 
   return (
     <div className="flex flex-col min-h-screen" ref={heroRef}>
       {/* Hero Section */}
-      <section className="container mx-auto px-6 py-6 md:py-6 flex flex-col md:flex-row items-center">
+      <section className="container mx-auto px-6 py-8 md:py-8 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 mb-12 md:mb-0 md:pr-12">
           <span className="hero-animate inline-flex items-center gap-2 text-pink-600 font-medium mb-4 px-4 py-2 bg-pink-50 rounded-full">
             <Award className="w-5 h-5" />
@@ -124,7 +130,7 @@ export default function Home() {
           <div className="hero-animate flex flex-col sm:flex-row gap-4 mb-8">
             <Button 
               asChild 
-              className="bg-pink-600 hover:bg-pink-700 text-white rounded-full text-lg px-8 py-3 h-auto font-medium transition-all duration-300 hover:shadow-lg hover:shadow-pink-200 flex items-center justify-center"
+              className="bg-pink-600 hover:bg-pink-700 text-white rounded-full text-lg px-12 py-3 h-auto font-medium transition-all duration-300 hover:shadow-lg hover:shadow-pink-200 flex items-center justify-center"
             >
               <Link href="/auth">
                 Get Started Free
@@ -134,7 +140,7 @@ export default function Home() {
             <Button 
               asChild 
               variant="outline"
-              className="border-pink-200 hover:bg-pink-50 text-gray-700 rounded-full text-lg px-8 py-3 h-auto font-medium"
+              className="border-pink-200 hover:bg-pink-50 text-gray-700 rounded-full text-lg px-10 py-3 h-auto font-medium"
             >
               <Link href="/about">Learn More</Link>
             </Button>
@@ -209,19 +215,88 @@ export default function Home() {
           <p className="text-xl text-gray-600 text-center mb-16 max-w-2xl mx-auto">
             Comprehensive healthcare solutions designed specifically for expectant mothers
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service) => (
-              <ServiceCard
-                key={service.id}
-                id={service.id}
-                title={service.title}
-                description={service.description}
-                icon={service.icon}
-              />
-            ))}
+          <div className="relative overflow-hidden max-w-[1400px] mx-auto">
+            <div 
+              className="flex animate-slide"
+              style={{
+                width: 'max-content',
+              }}
+            >
+              {/* First set of cards */}
+              <div className="flex">
+                {services.map((service) => (
+                  <div key={service.id} className="w-[300px] mx-4">
+                    <ServiceCard
+                      id={service.id}
+                      title={service.title}
+                      description={service.description}
+                      icon={service.icon}
+                    />
+                  </div>
+                ))}
+              </div>
+              {/* Duplicate set for infinite loop */}
+              <div className="flex">
+                {services.map((service) => (
+                  <div key={`${service.id}-duplicate`} className="w-[340px] mx-4">
+                    <ServiceCard
+                      id={service.id}
+                      title={service.title}
+                      description={service.description}
+                      icon={service.icon}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
+
+          <style jsx>{`
+            .animate-slide {
+              animation: slide 30s linear infinite;
+            }
+            .animate-slide:hover {
+              animation-play-state: paused;
+            }
+            @keyframes slide {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(-50%);
+              }
+            }
+          `}</style>
         </div>
       </section>
     </div>
   )
+}
+
+// Add the styles to the existing global.css file or create a new one if needed
+const styles = {
+  '@keyframes autoScroll': {
+    '0%': {
+      transform: 'translateX(0)',
+    },
+    '100%': {
+      transform: 'translateX(-50%)',
+    },
+  },
+}
+
+// Add this to your global styles
+if (typeof document !== 'undefined') {
+  const styleSheet = document.createElement('style')
+  styleSheet.textContent = `
+    @keyframes autoScroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+  `
+  document.head.appendChild(styleSheet)
 }

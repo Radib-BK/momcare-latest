@@ -112,8 +112,8 @@ export default function MedicineStore() {
             </div>
 
             <div className="page-anim">
-              <h2 className="text-xl font-semibold mb-4">Upload Prescription</h2>
-              <UploadBox onUpload={handleUpload} label="Upload prescription for OCR search" />
+              <h2 className="text-xl font-semibold mb-4">Upload Image</h2>
+              <UploadBox onUpload={handleUpload} label="Upload image for medicine search" />
             </div>
           </div>
 
