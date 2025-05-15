@@ -6,7 +6,7 @@ import Link from "next/link"
 import ServiceCard from "@/components/ServiceCard"
 import { gsap } from "gsap"
 import { Button } from "@/components/ui/button"
-import { Heart, ArrowRight, Star, Users, Clock, Award, MapPin } from "lucide-react"
+import { Heart, ArrowRight, Star, Users, Clock, Award, MapPin, Pill, Calendar, Scan, FileText } from "lucide-react"
 import { Playfair_Display } from "next/font/google"
 
 const playfair = Playfair_Display({ 

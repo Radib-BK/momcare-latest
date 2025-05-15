@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Pill, Calendar, Scan, FileText, ChevronRight, Heart } from "lucide-react"
+import { Pill, Calendar, Scan, FileText, ChevronRight, MapPin } from "lucide-react"
 import { gsap } from "gsap"
 
 export default function Sidebar() {
@@ -15,7 +15,7 @@ export default function Sidebar() {
     { id: "medicine-dates", title: "Medicine Dates", icon: Calendar },
     { id: "skin-disease-classification", title: "Skin Disease", icon: Scan },
     { id: "prescription-analyzer", title: "Prescription Analyzer", icon: FileText },
-    { id: "find-donor", title: "Find Donor", icon: Heart },
+    { id: "find-donor", title: "Find Blood Donor", icon: MapPin },
   ]
 
   useEffect(() => {

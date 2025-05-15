@@ -5,7 +5,7 @@ import Link from "next/link"
 import { gsap } from "gsap"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Pill, Calendar, Scan, FileText, ArrowRight, Shield, Heart } from "lucide-react"
+import { Pill, Calendar, Scan, FileText, ArrowRight, Shield, Heart, MapPin } from "lucide-react"
 import Sidebar from "@/components/Sidebar"
 import { Playfair_Display } from "next/font/google"
 
@@ -105,7 +105,7 @@ export default function ServicesPage() {
       id: "find-donor",
       title: "Find Blood Donor",
       description: "Locate nearby blood donors in real-time. Connect with verified donors and view their blood type and contact information on an interactive map.",
-      icon: <Heart className="h-8 w-8" />,
+      icon: <MapPin className="h-8 w-8" />,
       color: "red",
     },
   ]
@@ -184,7 +184,7 @@ export default function ServicesPage() {
               <CardContent className="p-8">
                 <Button 
                   asChild
-                  className="bg-pink-600 hover:bg-pink-700 transition-all duration-200 rounded-xl hover:shadow-lg hover:shadow-pink-200 text-white"
+                  className="bg-white text-pink-600 border-2 border-pink-600 hover:bg-pink-50 hover:border-pink-700 hover:text-pink-700 transition-all duration-200 rounded-xl hover:shadow-lg hover:shadow-pink-100"
                 >
                   <Link href="/contact">Contact Us</Link>
                 </Button>

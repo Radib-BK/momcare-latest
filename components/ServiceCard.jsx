@@ -1,10 +1,11 @@
 "use client"
 
 import Link from "next/link"
-import { Pill, Calendar, Scan, FileText, ArrowRight } from "lucide-react"
+import { Pill, Calendar, Scan, FileText, ArrowRight, MapPin } from "lucide-react"
 import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import React from "react"
 
 export default function ServiceCard({ id, title, description, icon }) {
   const cardRef = useRef(null)
@@ -38,6 +39,12 @@ export default function ServiceCard({ id, title, description, icon }) {
   }, [])
 
   const getIcon = () => {
+    // If icon is already a JSX element, return it directly
+    if (React.isValidElement(icon)) {
+      return React.cloneElement(icon, { size: 32 })
+    }
+    
+    // Otherwise, handle string cases
     switch (icon) {
       case "pill":
         return <Pill size={32} />
@@ -47,6 +54,8 @@ export default function ServiceCard({ id, title, description, icon }) {
         return <Scan size={32} />
       case "file-text":
         return <FileText size={32} />
+      case "map-pin":
+        return <MapPin size={32} />
       default:
         return <Pill size={32} />
     }
