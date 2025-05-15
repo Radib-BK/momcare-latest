@@ -96,7 +96,7 @@ export default function Home() {
           </p>
           <Button 
             asChild 
-            className="hero-animate text-white bg-pink-600 hover:bg-pink-700 rounded-full text-lg px-8 py-4 h-auto font-medium transition-all duration-300 hover:shadow-lg hover:shadow-pink-200"
+            className="hero-animate text-white bg-pink-600 hover:bg-pink-700 rounded-full text-lg px-8 py-3 h-auto font-medium transition-all duration-300 hover:shadow-lg hover:shadow-pink-200"
           >
             <Link href="/about">Read More</Link>
           </Button>
