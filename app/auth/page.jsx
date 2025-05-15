@@ -94,7 +94,7 @@ export default function AuthPage() {
       }
 
       const data = await response.json();
-      console.log('Login response:', data);
+      // console.log('Login response:', data);
 
       // Store the token and user data in localStorage
       localStorage.setItem('token', data.token);
@@ -148,7 +148,7 @@ export default function AuthPage() {
       }
 
       const data = await response.json();
-      console.log('Signup response:', data);
+      // console.log('Signup response:', data);
 
       // Store the token and user data in localStorage
       localStorage.setItem('token', data.token);

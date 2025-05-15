@@ -83,7 +83,7 @@ export default function Header() {
 
   const checkAuthStatus = () => {
     const token = localStorage.getItem('token')
-    console.log('Checking auth status, token:', token)
+    // console.log('Checking auth status, token:', token)
     
     if (token) {
       setIsLoggedIn(true)
