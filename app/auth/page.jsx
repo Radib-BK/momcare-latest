@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { gsap } from "gsap"
 import { Eye, EyeOff, Mail, Lock, Heart, User, Check } from "lucide-react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -76,11 +76,42 @@ export default function AuthPage() {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false)
-      router.push("/")
-    }, 1500)
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(error);
+      }
+
+      const data = await response.json();
+      console.log('Login response:', data);
+
+      // Store the token and user data in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userName', data.name);
+      localStorage.setItem('userEmail', data.email);
+
+      // Notify about auth state change
+      window.dispatchEvent(new Event('authStateChanged'));
+
+      // Redirect to home page
+      router.push('/');
+    } catch (error) {
+      console.error('Login error:', error);
+      alert(error.message || 'Failed to login');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const handleSignup = async (e) => {
@@ -98,11 +129,43 @@ export default function AuthPage() {
 
     setIsLoading(true)
 
-    // Simulate signup process
-    setTimeout(() => {
-      setIsLoading(false)
-      setActiveTab("login")
-    }, 1500)
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(error);
+      }
+
+      const data = await response.json();
+      console.log('Signup response:', data);
+
+      // Store the token and user data in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userName', data.name);
+      localStorage.setItem('userEmail', data.email);
+
+      // Notify about auth state change
+      window.dispatchEvent(new Event('authStateChanged'));
+
+      // Redirect to home page
+      router.push('/');
+    } catch (error) {
+      console.error('Signup error:', error);
+      alert(error.message || 'Failed to register');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -115,16 +178,6 @@ export default function AuthPage() {
       </div>
 
       <div className="w-full max-w-md space-y-8 mx-auto relative">
-        {/* <div className="text-center auth-anim">
-          <Link href="/" className="inline-block group">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Heart className="h-10 w-10 text-pink-600 group-hover:scale-110 transition-transform duration-300" />
-              <h1 className="text-5xl font-bold text-pink-600 font-serif">MomCare</h1>
-            </div>
-            <p className="text-gray-600 text-lg font-medium">Your pregnancy companion</p>
-          </Link>
-        </div> */}
-
         <Card className="auth-anim border-0 backdrop-blur-lg bg-white/80 shadow-xl hover:shadow-2xl p-6 transition-all duration-300">
           <CardHeader className="space-y-2 text-center pb-8">
             <CardTitle className="text-3xl font-serif bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">Welcome to MomCare</CardTitle>

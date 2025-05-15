@@ -6,6 +6,7 @@ import Link from "next/link"
 import ServiceCard from "@/components/ServiceCard"
 import { gsap } from "gsap"
 import { Button } from "@/components/ui/button"
+import { Heart } from "lucide-react"
 
 export default function Home() {
   const heroRef = useRef(null)
@@ -83,7 +84,7 @@ export default function Home() {
       <section className="container mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 mb-12 md:mb-0 md:pr-12">
           <h1 className="hero-animate text-5xl md:text-6xl font-bold text-deep-pink mb-8 leading-tight">
-            Welcome to <span className="font-serif italic">MomCare</span>
+            Welcome to <span className="font-serif italic"> MomCare</span>
           </h1>
           <p className="hero-animate text-xl mb-6 max-w-lg text-gray-700 leading-relaxed">
             Your smart companion during pregnancy. Get expert help, track medications, and analyze prescriptions with
@@ -107,7 +108,7 @@ export default function Home() {
             alt="Pregnancy Illustration"
             width={500}
             height={500}
-            className="max-w-full h-auto hover:scale-105 transition-transform duration-500"
+            className="max-w-full h-auto w-auto hover:scale-105 transition-transform duration-500"
             priority
           />
         </div>
