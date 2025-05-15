@@ -123,11 +123,11 @@ export default function AboutPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-pink-50">
                     <Avatar className="h-24 w-24 mb-4 ring-4 ring-pink-100">
-                      <AvatarImage src="/placeholder.svg" alt="Radib Bin Kabir" />
+                      <AvatarImage src="/122.jpg" alt="Radib Bin Kabir" />
                       <AvatarFallback className="bg-pink-600 text-white text-xl">RK</AvatarFallback>
                     </Avatar>
                     <h3 className="text-xl font-semibold mb-1">Radib Bin Kabir</h3>
-                    <p className="text-pink-600 font-medium mb-2">Lead Developer</p>
+                    <p className="text-pink-600 font-medium mb-2">Full Stack Developer</p>
                     <p className="text-gray-600">
                       Passionate about creating innovative technology solutions for healthcare.
                     </p>
@@ -135,13 +135,13 @@ export default function AboutPage() {
 
                   <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-pink-50">
                     <Avatar className="h-24 w-24 mb-4 ring-4 ring-pink-100">
-                      <AvatarImage src="/placeholder.svg" alt="Mehedi Ahamed" />
+                      <AvatarImage src="/125.jpg" alt="Mehedi Ahamed" />
                       <AvatarFallback className="bg-pink-600 text-white text-xl">MA</AvatarFallback>
                     </Avatar>
                     <h3 className="text-xl font-semibold mb-1">Mehedi Ahamed</h3>
-                    <p className="text-pink-600 font-medium mb-2">UX Designer</p>
+                    <p className="text-pink-600 font-medium mb-2">ML Developer</p>
                     <p className="text-gray-600">
-                      Focused on creating intuitive and accessible user experiences.
+                      Focused on creating innovative technology solutions for healthcare.
                     </p>
                   </div>
                 </div>
