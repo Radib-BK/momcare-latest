@@ -176,7 +176,7 @@ export default function ServicesPage() {
               <CardContent className="p-8">
                 <Button 
                   asChild
-                  className="bg-pink-600 hover:bg-pink-700 transition-all duration-200 rounded-xl hover:shadow-lg hover:shadow-pink-200"
+                  className="bg-pink-600 hover:bg-pink-700 transition-all duration-200 rounded-xl hover:shadow-lg hover:shadow-pink-200 text-white"
                 >
                   <Link href="/contact">Contact Us</Link>
                 </Button>
