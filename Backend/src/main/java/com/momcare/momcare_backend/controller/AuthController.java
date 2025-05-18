@@ -17,7 +17,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
