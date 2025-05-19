@@ -48,7 +48,7 @@ export default function SkinDiseaseClassification() {
       
       // Check confidence score and set result accordingly
       const confidence = data.confidence_score
-      if (confidence < 70) {
+      if (confidence < 80) {
         setResult({
           condition: "Normal Skin",
           confidence: confidence,

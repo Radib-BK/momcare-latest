@@ -20,19 +20,7 @@ const Map = dynamic(() => import('./Map'), {
   ssr: false
 })
 
-// Mock donor data with locations around Gazipur, Boardbazar (IUT area), and Uttara
-const mockDonors = [
-  { id: 1, name: "Rahima Begum", bloodType: "A+", phone: "01712345678", lat: 23.9985, lng: 90.4125 }, // Gazipur
-  { id: 2, name: "Abdul Karim", bloodType: "O-", phone: "01823456789", lat: 23.9825, lng: 90.4275 }, // Gazipur East
-  { id: 3, name: "Fatima Khan", bloodType: "B+", phone: "01934567890", lat: 23.9615, lng: 90.3650 }, // Boardbazar (IUT area)
-  { id: 4, name: "Mohammad Ali", bloodType: "A+", phone: "01645678901", lat: 23.9625, lng: 90.3665 }, // Boardbazar (IUT area)
-  { id: 5, name: "Nusrat Jahan", bloodType: "O+", phone: "01556789012", lat: 23.9605, lng: 90.3645 }, // Boardbazar (IUT area)
-  { id: 6, name: "Kamal Hassan", bloodType: "A+", phone: "01467890123", lat: 23.8698, lng: 90.3855 }, // Uttara
-  { id: 7, name: "Aisha Siddiqua", bloodType: "B-", phone: "01378901234", lat: 23.9755, lng: 90.4150 }, // Gazipur South
-  { id: 8, name: "Imran Hossain", bloodType: "AB-", phone: "01289012345", lat: 23.9635, lng: 90.3675 }, // Boardbazar (IUT area)
-  { id: 9, name: "Nasreen Akter", bloodType: "O+", phone: "01190123456", lat: 23.9895, lng: 90.4225 }, // Gazipur West
-  { id: 10, name: "Rafiq Islam", bloodType: "B+", phone: "01001234567", lat: 23.8738, lng: 90.3835 }  // Uttara
-]
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api'
 
 const bloodTypes = [
   { value: 'ALL', label: 'All Blood Types' },
@@ -51,32 +39,78 @@ export default function DonorMap() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedBloodType, setSelectedBloodType] = useState('ALL')
+  const [donors, setDonors] = useState([])
 
   useEffect(() => {
     // Get user's location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation({
+          const location = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          })
+          }
+          setUserLocation(location)
+          fetchDonors(location, selectedBloodType)
           setLoading(false)
         },
         (error) => {
           setError("Could not get your location. Please enable location services.")
           setLoading(false)
           // Fallback to Gazipur location
-          setUserLocation({ lat: 23.9985, lng: 90.4125 })
+          const location = { lat: 23.9985, lng: 90.4125 }
+          setUserLocation(location)
+          fetchDonors(location, selectedBloodType)
         }
       )
     } else {
       setError("Geolocation is not supported by your browser")
       setLoading(false)
       // Fallback to Gazipur location
-      setUserLocation({ lat: 23.9985, lng: 90.4125 })
+      const location = { lat: 23.9985, lng: 90.4125 }
+      setUserLocation(location)
+      fetchDonors(location, selectedBloodType)
     }
   }, [])
+
+  const fetchDonors = async (location, bloodType) => {
+    try {
+      const params = new URLSearchParams({
+        latitude: location.lat,
+        longitude: location.lng,
+        radiusKm: 20,
+        limit: 50
+      })
+      
+      if (bloodType !== 'ALL') {
+        params.append('bloodType', bloodType)
+      }
+
+      const response = await fetch(`${API_BASE_URL}/donors/nearby?${params}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch donors')
+      }
+      
+      const data = await response.json()
+      setDonors(data.map(donor => ({
+        id: donor.id,
+        name: donor.name,
+        bloodType: donor.bloodType,
+        phone: donor.phone,
+        lat: donor.latitude,
+        lng: donor.longitude
+      })))
+    } catch (error) {
+      console.error('Error fetching donors:', error)
+      setError('Failed to fetch donors. Please try again later.')
+    }
+  }
+
+  useEffect(() => {
+    if (userLocation) {
+      fetchDonors(userLocation, selectedBloodType)
+    }
+  }, [selectedBloodType])
 
   if (loading) {
     return (
@@ -95,10 +129,6 @@ export default function DonorMap() {
   }
 
   if (!userLocation) return null
-
-  const filteredDonors = selectedBloodType === 'ALL'
-    ? mockDonors
-    : mockDonors.filter(donor => donor.bloodType === selectedBloodType)
 
   return (
     <div>
@@ -123,7 +153,7 @@ export default function DonorMap() {
           </Select>
         </div>
       </div>
-      <Map userLocation={userLocation} donors={filteredDonors} />
+      <Map userLocation={userLocation} donors={donors} />
     </div>
   )
 } 

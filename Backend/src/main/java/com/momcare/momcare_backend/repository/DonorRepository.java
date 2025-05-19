@@ -5,13 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface DonorRepository extends JpaRepository<Donor, Long> {
     
     @Query(value = """
         SELECT d.* FROM donors d
-        WHERE d.is_available = true
-        AND d.blood_type = :bloodType
+        WHERE d.blood_type = :bloodType
         AND (
             6371 * acos(
                 cos(radians(:latitude)) * cos(radians(d.latitude))
@@ -38,8 +39,7 @@ public interface DonorRepository extends JpaRepository<Donor, Long> {
 
     @Query(value = """
         SELECT d.* FROM donors d
-        WHERE d.is_available = true
-        AND (
+        WHERE (
             6371 * acos(
                 cos(radians(:latitude)) * cos(radians(d.latitude))
                 * cos(radians(d.longitude) - radians(:longitude))
@@ -63,4 +63,6 @@ public interface DonorRepository extends JpaRepository<Donor, Long> {
     );
 
     List<Donor> findByUserId(Long userId);
+
+    boolean existsByPhone(String phone);
 } 

@@ -3,6 +3,7 @@ package com.momcare.momcare_backend.controller;
 import com.momcare.momcare_backend.model.Donor;
 import com.momcare.momcare_backend.service.DonorService;
 import com.momcare.momcare_backend.security.JwtUtil;
+import com.momcare.momcare_backend.dto.DonorRegistrationRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,28 +15,26 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/donors")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"}, allowCredentials = "true")
 @Slf4j
 public class DonorController {
     private final DonorService donorService;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<Donor> registerAsDonor(
-            @RequestHeader("Authorization") String token,
-            @RequestBody Map<String, Double> location) {
-        String email = jwtUtil.getEmailFromToken(token.replace("Bearer ", ""));
-        Donor donor = donorService.registerAsDonor(email, location.get("latitude"), location.get("longitude"));
-        return ResponseEntity.ok(donor);
+    public ResponseEntity<?> registerDonor(@RequestBody DonorRegistrationRequest request) {
+        try {
+            Donor donor = donorService.registerDonor(request);
+            return ResponseEntity.ok(donor);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
-    @PutMapping("/status")
-    public ResponseEntity<Void> updateDonorStatus(
-            @RequestHeader("Authorization") String token,
-            @RequestBody Map<String, Boolean> status) {
-        String email = jwtUtil.getEmailFromToken(token.replace("Bearer ", ""));
-        donorService.updateDonorStatus(email, status.get("isAvailable"));
-        return ResponseEntity.ok().build();
+    @GetMapping("/check-phone/{phone}")
+    public ResponseEntity<Map<String, Boolean>> checkPhoneExists(@PathVariable String phone) {
+        boolean exists = donorService.checkPhoneExists(phone);
+        return ResponseEntity.ok(Map.of("exists", exists));
     }
 
     @GetMapping("/nearby")

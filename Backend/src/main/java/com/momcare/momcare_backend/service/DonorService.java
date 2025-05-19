@@ -5,6 +5,7 @@ import com.momcare.momcare_backend.model.User;
 import com.momcare.momcare_backend.repository.DonorRepository;
 import com.momcare.momcare_backend.repository.UserRepository;
 import com.momcare.momcare_backend.exception.AuthenticationException;
+import com.momcare.momcare_backend.dto.DonorRegistrationRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,27 @@ public class DonorService {
     private final UserRepository userRepository;
 
     @Transactional
+    public Donor registerDonor(DonorRegistrationRequest request) {
+        if (checkPhoneExists(request.phone())) {
+            throw new IllegalArgumentException("Phone number already registered");
+        }
+
+        Donor donor = Donor.builder()
+                .name(request.name())
+                .phone(request.phone())
+                .bloodType(request.bloodType())
+                .latitude(request.latitude())
+                .longitude(request.longitude())
+                .build();
+
+        return donorRepository.save(donor);
+    }
+
+    public boolean checkPhoneExists(String phone) {
+        return donorRepository.existsByPhone(phone);
+    }
+
+    @Transactional
     public Donor registerAsDonor(String email, Double latitude, Double longitude) {
         log.info("Registering user as donor: {}", email);
         
@@ -32,7 +54,6 @@ public class DonorService {
             Donor existingDonor = existingDonors.get(0);
             existingDonor.setLatitude(latitude);
             existingDonor.setLongitude(longitude);
-            existingDonor.setIsAvailable(true);
             return donorRepository.save(existingDonor);
         }
 
@@ -42,27 +63,9 @@ public class DonorService {
             .bloodType(user.getBloodType())
             .latitude(latitude)
             .longitude(longitude)
-            .isAvailable(true)
             .build();
 
         return donorRepository.save(donor);
-    }
-
-    @Transactional
-    public void updateDonorStatus(String email, Boolean isAvailable) {
-        log.info("Updating donor status for user: {}", email);
-        
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new AuthenticationException("User not found"));
-
-        List<Donor> donors = donorRepository.findByUserId(user.getId());
-        if (donors.isEmpty()) {
-            throw new IllegalStateException("User is not registered as a donor");
-        }
-
-        Donor donor = donors.get(0);
-        donor.setIsAvailable(isAvailable);
-        donorRepository.save(donor);
     }
 
     public List<Donor> findNearbyDonors(double latitude, double longitude, String bloodType, double radiusKm, int limit) {

@@ -32,6 +32,11 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
+import { useRef } from 'react'
 
 const playfair = Playfair_Display({ 
   subsets: ['latin'],
@@ -41,6 +46,17 @@ const playfair = Playfair_Display({
 })
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+
+const donorBloodTypes = [
+  { value: 'O+', label: 'O Positive (O+)' },
+  { value: 'O-', label: 'O Negative (O-)' },
+  { value: 'A+', label: 'A Positive (A+)' },
+  { value: 'A-', label: 'A Negative (A-)' },
+  { value: 'B+', label: 'B Positive (B+)' },
+  { value: 'B-', label: 'B Negative (B-)' },
+  { value: 'AB+', label: 'AB Positive (AB+)' },
+  { value: 'AB-', label: 'AB Negative (AB-)' },
+]
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -272,6 +288,12 @@ export default function Header() {
                 </Button>
               )}
             </div>
+
+            {pathname === '/find-donor' && (
+              <Button asChild variant="outline" className="ml-2 bg-white text-pink-600 border-pink-200 font-semibold px-5 py-2 rounded-full shadow-sm hover:bg-pink-50 transition-colors">
+                <Link href="/find-donor/be-donor">Be a Donor</Link>
+              </Button>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
