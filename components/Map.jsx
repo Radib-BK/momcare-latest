@@ -47,8 +47,18 @@ function Map({ userLocation, donors }) {
           maxZoom: 19
         }).addTo(mapInstanceRef.current)
 
-        // Add user marker with custom popup
-        L.marker([userLocation.lat, userLocation.lng])
+        // Add user marker with custom icon and popup
+        const userIcon = L.icon({
+          iconUrl: '/self_location_icon.png',
+          iconRetinaUrl: '/self_location_icon.png',
+          shadowUrl: '/marker-shadow.png',
+          iconSize: [50, 60],      // width: 50px, height: 60px
+          iconAnchor: [25, 60],    // half width, full height
+          popupAnchor: [1, -50],   // adjust popup position above the icon
+          shadowSize: [60, 60]
+        })
+
+        L.marker([userLocation.lat, userLocation.lng], { icon: userIcon })
           .bindPopup(`
             <div class="bg-white p-3 rounded-lg shadow-sm">
               <div class="flex items-center justify-center">
