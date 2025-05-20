@@ -9,65 +9,17 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-// Dummy medicine data
-const medicines = [
-  {
-    id: 1,
-    name: "Prenatal Multivitamin",
-    usage: "Daily supplement for pregnant women",
-    price: 24.99,
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 2,
-    name: "Folic Acid",
-    usage: "Prevents neural tube defects",
-    price: 12.5,
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 3,
-    name: "Iron Supplement",
-    usage: "Prevents anemia during pregnancy",
-    price: 15.75,
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 4,
-    name: "Calcium Citrate",
-    usage: "Supports bone health for mother and baby",
-    price: 18.99,
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 5,
-    name: "Omega-3 DHA",
-    usage: "Supports baby brain development",
-    price: 29.95,
-    image: "/placeholder.svg?height=200&width=200",
-  },
-  {
-    id: 6,
-    name: "Vitamin D3",
-    usage: "Supports immune function and bone health",
-    price: 14.5,
-    image: "/placeholder.svg?height=200&width=200",
-  },
-]
-
 export default function MedicineStore() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [filteredMedicines, setFilteredMedicines] = useState(medicines)
+  const [filteredMedicines, setFilteredMedicines] = useState([]) // start empty
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const pageRef = useRef(null)
 
   useEffect(() => {
-    // Filter medicines based on search term
-    const results = medicines.filter(
-      (medicine) =>
-        medicine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        medicine.usage.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
-    setFilteredMedicines(results)
+    // Remove filtering logic based on dummy data
+    // If you want to support text search on fetched results, filter filteredMedicines here
+    // Otherwise, do nothing
   }, [searchTerm])
 
   useEffect(() => {
@@ -79,12 +31,52 @@ export default function MedicineStore() {
     )
   }, [])
 
-  const handleUpload = (file) => {
-    // Simulate OCR search - just set a random medicine name as search term
-    const randomIndex = Math.floor(Math.random() * medicines.length)
-    setTimeout(() => {
-      setSearchTerm(medicines[randomIndex].name)
-    }, 1000)
+  const handleUpload = async (file) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("top_k", "5")
+
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_API?.trim() || "http://localhost:8081"
+      const response = await fetch(`${backendUrl}/api/image-search`, {
+        method: "POST",
+        body: formData,
+        credentials: 'omit',  // Explicitly omit credentials
+        headers: {
+          'Accept': 'application/json',
+        }
+      })
+      
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error("Error response:", errorText)
+        throw new Error(errorText || "Image search failed")
+      }
+      
+      const data = await response.json()
+      // Map backend response to medicine card format
+      if (data.matches && Array.isArray(data.matches)) {
+        const mapped = data.matches.map((match) => ({
+          id: match.metadata?.id || match.id,
+          name: match.metadata?.medicine_name || "Unknown",
+          usage: match.metadata?.description || "",
+          price: match.metadata?.price_per_unit || 0,
+          image: match.metadata?.image_url || "/placeholder.svg?height=200&width=200",
+        }))
+        setFilteredMedicines(mapped)
+        setSearchTerm("") // clear search term to show only image results
+      } else {
+        setFilteredMedicines([])
+      }
+    } catch (err) {
+      console.error("Upload error:", err)
+      setError(err.message || "Image search failed")
+      setFilteredMedicines([])
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -120,6 +112,16 @@ export default function MedicineStore() {
           {/* Medicine Cards */}
           <div className="page-anim">
             <h2 className="text-xl font-semibold mb-4">Available Medicines</h2>
+            {loading && (
+              <div className="text-center py-8">
+                <p className="text-gray-500">Searching by image...</p>
+              </div>
+            )}
+            {error && (
+              <div className="text-center py-8">
+                <p className="text-red-500">{error}</p>
+              </div>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredMedicines.map((medicine) => (
                 <Card key={medicine.id} className="overflow-hidden">
@@ -143,8 +145,7 @@ export default function MedicineStore() {
                 </Card>
               ))}
             </div>
-
-            {filteredMedicines.length === 0 && (
+            {filteredMedicines.length === 0 && !loading && !error && (
               <div className="text-center py-8">
                 <p className="text-gray-500">No medicines found matching "{searchTerm}"</p>
               </div>

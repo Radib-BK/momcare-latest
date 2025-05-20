@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+**/venv/
+venv/
+**/*venv*/
+./momCareSkinAPI/venv/
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so

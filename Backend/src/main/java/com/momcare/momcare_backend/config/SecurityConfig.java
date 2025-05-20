@@ -35,7 +35,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:3000", "http://localhost:3001"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Be explicit
         configuration.setAllowedMethods(Arrays.asList(
             HttpMethod.GET.name(),
             HttpMethod.POST.name(),
@@ -43,26 +43,8 @@ public class SecurityConfig {
             HttpMethod.DELETE.name(),
             HttpMethod.OPTIONS.name()
         ));
-        configuration.setAllowedHeaders(Arrays.asList(
-            "Origin",
-            "Access-Control-Allow-Origin",
-            "Content-Type",
-            "Accept",
-            "Authorization",
-            "Origin, Accept",
-            "X-Requested-With",
-            "Access-Control-Request-Method",
-            "Access-Control-Request-Headers"
-        ));
-        configuration.setExposedHeaders(Arrays.asList(
-            "Origin",
-            "Content-Type",
-            "Accept",
-            "Authorization",
-            "Access-Control-Allow-Origin",
-            "Access-Control-Allow-Credentials"
-        ));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(false);  // Set to false
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -99,7 +81,8 @@ public class SecurityConfig {
                     "/api/auth/**",
                     "/api/donors/**",
                     "/api/skin-disease/**", 
-                    "/api/uploads/**"
+                    "/api/uploads/**",
+                    "/api/image-search/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
@@ -108,4 +91,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-} 
+}
