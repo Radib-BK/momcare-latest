@@ -20,7 +20,7 @@ const Map = dynamic(() => import('./Map'), {
   ssr: false
 })
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_BACKEND_API}/api`
 
 const bloodTypes = [
   { value: 'ALL', label: 'All Blood Types' },

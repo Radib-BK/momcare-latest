@@ -45,7 +45,7 @@ const playfair = Playfair_Display({
   variable: '--font-playfair',
 })
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_BACKEND_API}/api`;
 
 const donorBloodTypes = [
   { value: 'O+', label: 'O Positive (O+)' },

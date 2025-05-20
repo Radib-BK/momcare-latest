@@ -13,6 +13,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+const BACKEND_API= process.env.NEXT_PUBLIC_BACKEND_API
+
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("login")
   const [email, setEmail] = useState("")
@@ -77,7 +79,7 @@ export default function AuthPage() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch(`${BACKEND_API}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +133,7 @@ export default function AuthPage() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/register', {
+      const response = await fetch(`${BACKEND_API}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

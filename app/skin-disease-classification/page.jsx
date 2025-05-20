@@ -6,7 +6,7 @@ import UploadBox from "@/components/UploadBox"
 import { gsap } from "gsap"
 
 // Add API base URL - you can move this to an environment variable later
-const API_BASE_URL = 'http://localhost:8080/api'
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_API}/api`
 
 export default function SkinDiseaseClassification() {
   const [result, setResult] = useState(null)
