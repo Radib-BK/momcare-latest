@@ -82,7 +82,9 @@ public class SecurityConfig {
                     "/api/donors/**",
                     "/api/skin-disease/**", 
                     "/api/uploads/**",
-                    "/api/image-search/**"
+                    "/api/image-search/**",
+                    "/api/products/**",
+                    "/api/nlp/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
