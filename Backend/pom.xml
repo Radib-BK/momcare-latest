@@ -127,6 +127,19 @@
 			<artifactId>basicdataset</artifactId>
 			<version>0.33.0</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/ai.djl.huggingface/tokenizers -->
+		<dependency>
+			<groupId>ai.djl.huggingface</groupId>
+			<artifactId>tokenizers</artifactId>
+			<version>0.33.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.microsoft.onnxruntime/onnxruntime -->
+		<dependency>
+			<groupId>com.microsoft.onnxruntime</groupId>
+			<artifactId>onnxruntime</artifactId>
+			<version>1.22.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
