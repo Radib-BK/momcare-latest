@@ -104,6 +104,12 @@ export default function Home() {
       icon: "file-text",
     },
     {
+      id: "calorie-estimator",
+      title: "Calorie Estimator",
+      description: "Upload food images and get calorie estimates per 100g.",
+      icon: "calculator",
+    },
+    {
       id: "find-donor",
       title: "Find Blood Donor",
       description: "Locate nearby blood donors quickly with our interactive map.",

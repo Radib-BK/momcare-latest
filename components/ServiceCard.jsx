@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Pill, Calendar, Scan, FileText, ArrowRight, MapPin } from "lucide-react"
+import { Pill, Calendar, Scan, FileText, ArrowRight, MapPin, Calculator } from "lucide-react"
 import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -54,6 +54,8 @@ export default function ServiceCard({ id, title, description, icon }) {
         return <Scan size={32} />
       case "file-text":
         return <FileText size={32} />
+      case "calculator":
+        return <Calculator size={32} />
       case "map-pin":
         return <MapPin size={32} />
       default:

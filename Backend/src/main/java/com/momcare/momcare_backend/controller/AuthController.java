@@ -63,4 +63,10 @@ public class AuthController {
         String fileName = userService.updateProfileImageByEmail(email, file);
         return ResponseEntity.ok(fileName);
     }
+    
+    // Test endpoint to verify controller is working
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Backend is running!");
+    }
 } 

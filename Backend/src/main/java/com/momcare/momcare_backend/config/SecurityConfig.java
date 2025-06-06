@@ -1,7 +1,4 @@
 package com.momcare.momcare_backend.config;
-
-import com.momcare.momcare_backend.security.JwtAuthenticationFilter;
-import com.momcare.momcare_backend.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,11 +23,11 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
-    private final CustomUserDetailsService userDetailsService;
+    // private final JwtAuthenticationFilter jwtAuthFilter;
+    // private final CustomUserDetailsService userDetailsService;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -57,13 +54,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
+    // @Bean
+    // public AuthenticationProvider authenticationProvider() {
+    //     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    //     authProvider.setUserDetailsService(userDetailsService);
+    //     authProvider.setPasswordEncoder(passwordEncoder());
+    //     return authProvider;
+    // }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -82,12 +79,11 @@ public class SecurityConfig {
                     "/api/donors/**",
                     "/api/skin-disease/**", 
                     "/api/uploads/**",
-                    "/api/image-search/**"
+                    "/api/image-search/**",
+                    "/api/calorie-estimate/**"
                 ).permitAll()
-                .anyRequest().authenticated()
-            )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().permitAll()  // Temporarily allow all requests
+            );
 
         return http.build();
     }
