@@ -11,6 +11,11 @@ from PIL import Image
 import io
 import json
 import torch
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file in parent directory
+load_dotenv("../.env")
 
 app = FastAPI()
 
@@ -27,7 +32,8 @@ app.add_middleware(
 processor = AutoImageProcessor.from_pretrained("nateraw/food")
 model = AutoModelForImageClassification.from_pretrained("nateraw/food")
 
-SPOONACULAR_API_KEY = "34827ffe67c644eabaa3459cefebfec6"
+# Get API key from environment variables
+SPOONACULAR_API_KEY = os.getenv("SPOONACULAR_API_KEY", "34827ffe67c644eabaa3459cefebfec6")
 
 @app.post("/api/calorie-estimate")
 async def estimate_calories(file: UploadFile = File(...)):
