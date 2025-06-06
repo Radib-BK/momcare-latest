@@ -103,7 +103,7 @@ export default function CalorieEstimatorPage() {
       const formData = new FormData()
       formData.append('file', selectedFile)
 
-      const response = await fetch(`/api/calorie-estimate`, {
+      const response = await fetch(`http://localhost:8081/api/calorie-estimate`, {
         method: 'POST',
         body: formData,
       })

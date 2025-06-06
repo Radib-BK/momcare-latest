@@ -120,12 +120,6 @@
 			<artifactId>pytorch-engine</artifactId>
 			<version>0.33.0</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/ai.djl.pytorch/pytorch-engine -->
-		<dependency>
-			<groupId>ai.djl.pytorch</groupId>
-			<artifactId>pytorch-engine</artifactId>
-			<version>0.33.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/ai.djl/basicdataset -->
 		<dependency>
 			<groupId>ai.djl</groupId>
