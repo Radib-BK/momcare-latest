@@ -15,7 +15,7 @@ import java.util.Map;
 @Service
 public class SkinDiseaseService {
 
-    @Value("${python.service.url:http://127.0.0.1:8000}")
+    @Value("${python.skin_disease.url}")
     private String pythonServiceUrl;
 
     private final RestTemplate restTemplate;

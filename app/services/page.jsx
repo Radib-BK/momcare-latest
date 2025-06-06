@@ -5,7 +5,7 @@ import Link from "next/link"
 import { gsap } from "gsap"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Pill, Calendar, Scan, FileText, ArrowRight, Shield, Heart, MapPin } from "lucide-react"
+import { Pill, Calendar, Scan, FileText, ArrowRight, Shield, Heart, MapPin, Calculator } from "lucide-react"
 import Sidebar from "@/components/Sidebar"
 import { Playfair_Display } from "next/font/google"
 
@@ -99,7 +99,14 @@ export default function ServicesPage() {
       title: "Prescription Analyzer",
       description: "Upload your prescriptions for instant digital analysis. Understand your medications better with our smart system.",
       icon: <FileText className="h-8 w-8" />,
-      color: "green",
+            color: "green",
+    },
+    {
+      id: "calorie-estimator",
+      title: "Calorie Estimator",
+      description: "Upload food images and get calorie estimates per 100g. AI-powered food recognition helps track your nutritional intake.",
+      icon: <Calculator className="h-8 w-8" />,
+      color: "orange",
     },
     {
       id: "find-donor",
@@ -116,6 +123,7 @@ export default function ServicesPage() {
       purple: "from-purple-500 to-violet-500",
       blue: "from-blue-500 to-cyan-500",
       green: "from-green-500 to-emerald-500",
+      orange: "from-orange-500 to-amber-500",
       red: "from-red-500 to-rose-600",
     }
     return gradients[color]

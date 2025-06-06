@@ -1,17 +1,28 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { FileText, AlertCircle } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { FileText, AlertCircle, RotateCcw, Copy } from "lucide-react"
 import Sidebar from "@/components/Sidebar"
 import UploadBox from "@/components/UploadBox"
 import { gsap } from "gsap"
+import Cropper from "react-easy-crop"
+import getCroppedImg from "./utils/cropImage" // We'll define this helper below
 
 export default function PrescriptionAnalyzer() {
   const [extractedData, setExtractedData] = useState(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [rotation, setRotation] = useState(0)
+  const [cropped, setCropped] = useState(false)
+  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+  const imageRef = useRef(null)
+  const [copied, setCopied] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedText, setEditedText] = useState("")
 
   useEffect(() => {
-    // Animation for page elements
     gsap.fromTo(
       ".page-anim",
       { y: 30, opacity: 0 },
@@ -19,62 +30,89 @@ export default function PrescriptionAnalyzer() {
     )
   }, [])
 
-  const handleUpload = (file) => {
+  // Handle crop complete from Cropper
+  const onCropComplete = (_, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels)
+  }
+
+  // Handle image cropping (with react-easy-crop)
+  const handleCrop = async () => {
+    if (!selectedImage || !croppedAreaPixels) return
+    const croppedFile = await getCroppedImg(
+      URL.createObjectURL(selectedImage),
+      croppedAreaPixels
+    )
+    setSelectedImage(croppedFile)
+    setCropped(true)
+  }
+
+  // Handle image rotation
+  const handleRotate = () => {
+    setRotation((prev) => (prev + 90) % 360)
+  }
+
+  // Handle file upload from UploadBox
+  const handleUploadBox = (file) => {
+    setSelectedImage(file)
+    setRotation(0)
+    setCropped(false)
+    setExtractedData(null)
+  }
+
+  // Handle actual upload to backend
+  const handleAnalyze = async () => {
     setIsAnalyzing(true)
     setExtractedData(null)
+    try {
+      const formData = new FormData()
+      formData.append("files", selectedImage, selectedImage.name)
+      formData.append("query", "What is in the image. Give extracted texts. Don't add any extra word. If not a paper, say 'Please provide a prescription'. Just give output. /OCR.")
+      formData.append("context", "")
 
-    // Simulate prescription analysis with a delay
-    setTimeout(() => {
-      const mockPrescriptionData = {
-        doctor: "Dr. Sarah Johnson",
-        patient: "Jane Smith",
-        date: "2025-05-10",
-        medications: [
-          {
-            name: "Prenatal Multivitamin",
-            dosage: "1 tablet",
-            frequency: "Once daily",
-            duration: "Throughout pregnancy",
-            notes: "Take with food",
-          },
-          {
-            name: "Folic Acid",
-            dosage: "400mcg",
-            frequency: "Once daily",
-            duration: "12 weeks",
-            notes: "Take in the morning",
-          },
-          {
-            name: "Iron Supplement",
-            dosage: "27mg",
-            frequency: "Once daily",
-            duration: "As directed",
-            notes: "May cause constipation",
-          },
-        ],
-        instructions: "Stay hydrated. Get adequate rest. Schedule follow-up in 4 weeks.",
-      }
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_API?.trim() 
+      const res = await fetch(`${backendUrl}/api/nlp/prescription_analyze`, {
+        method: "POST",
+        body: formData,
+      })
 
-      setExtractedData(mockPrescriptionData)
+      if (!res.ok) throw new Error("Failed to analyze prescription")
+      const data = await res.json()
+
+      setExtractedData(data.answer || "")
+    } catch (e) {
+      setExtractedData("")
+    } finally {
       setIsAnalyzing(false)
-
-      // Animate the result appearance
       gsap.fromTo(
         ".result-anim",
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: "power2.out" },
       )
-    }, 2000)
+    }
+  }
+
+  // Copy analyzed output
+  const handleCopy = () => {
+    const textToCopy = isEditing ? editedText : extractedData
+    if (textToCopy) {
+      navigator.clipboard.writeText(textToCopy)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    }
+  }
+
+  // Save edited text
+  const handleSave = () => {
+    setExtractedData(editedText)
+    setIsEditing(false)
   }
 
   return (
     <div className="flex min-h-[calc(100vh-64px)]">
       <Sidebar />
-
       <div className="flex-1 ml-[70px] p-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold text-deep-pink mb-8 page-anim">Prescription Analyzer</h1>
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Upload Section */}
             <div className="page-anim">
@@ -82,9 +120,7 @@ export default function PrescriptionAnalyzer() {
               <p className="text-gray-600 mb-4">
                 Upload a clear image of your prescription to extract and analyze the information.
               </p>
-              <UploadBox onUpload={handleUpload} label="Upload prescription image" />
-
-              <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
                 <div className="flex">
                   <AlertCircle className="text-blue-500 mr-2 flex-shrink-0" size={20} />
                   <p className="text-sm text-blue-700">
@@ -92,12 +128,64 @@ export default function PrescriptionAnalyzer() {
                   </p>
                 </div>
               </div>
+              <UploadBox onUpload={handleUploadBox} label="Upload prescription image" />
+
+              {selectedImage && (
+                <div className="mt-4">
+                  <div className="relative w-[300px] h-[300px] mx-auto mb-2 bg-gray-100 rounded">
+                    <Cropper
+                      image={URL.createObjectURL(selectedImage)}
+                      crop={crop}
+                      zoom={zoom}
+                      aspect={1}
+                      onCropChange={setCrop}
+                      onZoomChange={setZoom}
+                      onCropComplete={onCropComplete}
+                      rotation={rotation}
+                    />
+                  </div>
+                  <div className="flex gap-2 mb-2">
+                    <button
+                      className="flex items-center px-3 py-1 bg-gray-100 rounded hover:bg-gray-200 text-sm"
+                      onClick={handleRotate}
+                      type="button"
+                    >
+                      <RotateCcw className="mr-1" size={16} /> Rotate
+                    </button>
+                    <button
+                      className="flex items-center px-3 py-1 bg-gray-100 rounded hover:bg-gray-200 text-sm"
+                      onClick={handleCrop}
+                      type="button"
+                    >
+                      ✂️ Crop
+                    </button>
+                    <input
+                      type="range"
+                      min={1}
+                      max={3}
+                      step={0.1}
+                      value={zoom}
+                      onChange={e => setZoom(Number(e.target.value))}
+                      className="ml-2"
+                      style={{ width: 100 }}
+                    />
+                  </div>
+                  <button
+                    className="mt-2 px-4 py-2 bg-pink-600 text-white rounded hover:bg-pink-700"
+                    onClick={handleAnalyze}
+                    disabled={isAnalyzing}
+                    type="button"
+                  >
+                    Analyze Prescription
+                  </button>
+                </div>
+              )}
+
             </div>
 
             {/* Results Section */}
             <div className="page-anim">
               <h2 className="text-xl font-semibold mb-4">Analysis Results</h2>
-
               {isAnalyzing ? (
                 <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
                   <div className="w-16 h-16 border-4 border-pink-600 border-t-transparent rounded-full animate-spin mb-4"></div>
@@ -105,61 +193,59 @@ export default function PrescriptionAnalyzer() {
                 </div>
               ) : extractedData ? (
                 <div className="bg-white rounded-lg shadow-md p-6">
-                  <div className="mb-6 result-anim">
+                  <div className="result-anim">
                     <div className="flex items-center mb-4">
                       <FileText className="text-pink-600 mr-2" size={24} />
-                      <h3 className="text-lg font-semibold">Prescription Details</h3>
+                      <h3 className="text-lg font-semibold">Extracted Text</h3>
+                      <button
+                        className="ml-auto flex items-center px-2 py-1 bg-gray-100 rounded hover:bg-gray-200 text-sm mr-2"
+                        onClick={handleCopy}
+                        type="button"
+                      >
+                        <Copy className="mr-1" size={16} />
+                        {copied ? "Copied!" : "Copy"}
+                      </button>
+                      {isEditing ? (
+                        <>
+                          <button
+                            className="flex items-center px-2 py-1 bg-gray-100 rounded hover:bg-gray-200 text-sm mr-2"
+                            onClick={() => setIsEditing(false)}
+                            type="button"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            className="flex items-center px-2 py-1 bg-pink-600 text-white rounded hover:bg-pink-700 text-sm"
+                            onClick={handleSave}
+                            type="button"
+                          >
+                            Save
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          className="flex items-center px-2 py-1 bg-gray-100 rounded hover:bg-gray-200 text-sm"
+                          onClick={() => {
+                            setIsEditing(true)
+                            setEditedText(extractedData)
+                          }}
+                          type="button"
+                        >
+                          Edit
+                        </button>
+                      )}
                     </div>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <p className="text-gray-500">Doctor</p>
-                        <p className="font-medium">{extractedData.doctor}</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-500">Patient</p>
-                        <p className="font-medium">{extractedData.patient}</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-500">Date</p>
-                        <p className="font-medium">{new Date(extractedData.date).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mb-6 result-anim">
-                    <h3 className="text-lg font-semibold mb-4">Medications</h3>
-                    {extractedData.medications.map((med, index) => (
-                      <div key={index} className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <h4 className="font-medium text-pink-600">{med.name}</h4>
-                        <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                          <div>
-                            <span className="text-gray-500">Dosage:</span> {med.dosage}
-                          </div>
-                          <div>
-                            <span className="text-gray-500">Frequency:</span> {med.frequency}
-                          </div>
-                          <div>
-                            <span className="text-gray-500">Duration:</span> {med.duration}
-                          </div>
-                          <div>
-                            <span className="text-gray-500">Notes:</span> {med.notes}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="result-anim">
-                    <h3 className="text-lg font-semibold mb-2">Additional Instructions</h3>
-                    <p className="text-gray-700 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                      {extractedData.instructions}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-gray-200 result-anim">
-                    <p className="text-sm text-gray-500 italic">
-                      Note: Always consult with your healthcare provider to confirm the accuracy of this analysis.
-                    </p>
+                    {isEditing ? (
+                      <textarea
+                        className="w-full min-h-[180px] text-gray-700 p-3 bg-gray-50 rounded-lg border border-gray-200 whitespace-pre-wrap"
+                        value={editedText}
+                        onChange={e => setEditedText(e.target.value)}
+                      />
+                    ) : (
+                      <pre className="text-gray-700 p-3 bg-gray-50 rounded-lg border border-gray-200 whitespace-pre-wrap">
+                        {extractedData}
+                      </pre>
+                    )}
                   </div>
                 </div>
               ) : (

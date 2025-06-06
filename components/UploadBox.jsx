@@ -51,12 +51,30 @@ export default function UploadBox({ onUpload, label = "Upload Image" }) {
     }
   }
 
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      onUpload(file)
+    } else {
+      // When file is deselected, call onUpload with null
+      onUpload(null)
+    }
+  }
+
   const clearFile = () => {
     setFile(null)
     setPreview("")
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
     }
+  }
+
+  // Add a clear button if you want to explicitly clear the selection
+  const clearSelection = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
+    onUpload(null)
   }
 
   return (
