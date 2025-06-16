@@ -197,3 +197,9 @@ This project is licensed under the MIT License.
 ## Support
 
 For issues or questions, please contact the development team or create an issue in the repository. 
+
+## Screenshots
+![image](https://github.com/user-attachments/assets/1abba4c4-fc2d-4f7d-b503-e02d527f72cb)
+
+![image](https://github.com/user-attachments/assets/8b439b54-c748-48d8-b106-0b83fcf3aaf3)
+
