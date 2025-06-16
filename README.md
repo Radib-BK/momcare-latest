@@ -1,17 +1,6 @@
 # MomCare - Maternal Healthcare App
 
 <div align="center">
-<<<<<<< Updated upstream
-  <img src="https://github.com/user-attachments/assets/1abba4c4-fc2d-4f7d-b503-e02d527f72cb" alt="MomCare Dashboard" width="600"/>
-  <br/>
-  <img src="https://github.com/user-attachments/assets/8b439b54-c748-48d8-b106-0b83fcf3aaf3" alt="MomCare Services" width="600"/>
-  <br/>
-  <img src="https://github.com/user-attachments/assets/42299ef9-fe13-4eca-814b-93af93340d36" alt="Image Search and Semantic Searching" width="600"/>
-  <br/>
-  <img src="https://github.com/user-attachments/assets/72066042-6072-4c52-86c5-08ed80302057" alt="Skin Diseases Detection" width="600"/>
-
-
-=======
   <h3>📱 Application Screenshots</h3>
   
   <table>
@@ -21,28 +10,31 @@
         <img src="public/HomePage.png" alt="MomCare Home Page" width="300"/>
       </td>
       <td align="center">
-        <strong>🍎 Calorie Estimator</strong><br/>
-        <img src="public/CaloriePage.png" alt="Calorie Estimator Page" width="300"/>
+        <strong>✨ Features Overview</strong><br/>
+        <img src="public/FeaturesPage.png" alt="Features Page" width="300"/>
       </td>
     </tr>
     <tr>
+      <td align="center">
+        <strong>🍎 Calorie Estimator</strong><br/>
+        <img src="public/CaloriePage.png" alt="Calorie Estimator Page" width="300"/>
+      </td>
       <td align="center">
         <strong>🩸 Blood Donor Finder</strong><br/>
         <img src="public/DonorPage.png" alt="Blood Donor Page" width="300"/>
       </td>
+    </tr>
+    <tr>
       <td align="center">
         <strong>🔬 Skin Disease Classification</strong><br/>
         <img src="public/SkinPage.png" alt="Skin Disease Classification Page" width="300"/>
       </td>
-    </tr>
-    <tr>
-      <td colspan="2" align="center">
-        <strong>✨ Features Overview</strong><br/>
-        <img src="public/FeaturesPage.png" alt="Features Page" width="600"/>
+      <td align="center">
+        <strong>🔍 Image Search & Semantic Search</strong><br/>
+        <img src="https://github.com/user-attachments/assets/42299ef9-fe13-4eca-814b-93af93340d36" alt="Image Search and Semantic Searching" width="300"/>
       </td>
     </tr>
   </table>
->>>>>>> Stashed changes
 </div>
 
 A comprehensive Next.js application designed specifically for expectant mothers, providing essential healthcare services including medication tracking, prescription analysis, skin disease classification, blood donor location, and AI-powered calorie estimation.
@@ -176,54 +168,3 @@ NEXT_PUBLIC_API_URL=http://localhost:3000
 ```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
-
-**Port Conflicts:**
-- Frontend: `http://localhost:3000`
-- Food API: `http://localhost:8000`
-- Skin API: `http://localhost:8001`
-
-**CORS Issues:**
-Python services are configured for development. Update CORS settings in production.
-
-## 📁 Project Structure
-
-```
-momcare-latest/
-├── app/                          # Next.js app directory
-│   ├── services/                 # Services overview page
-│   ├── calorie-estimator/        # Calorie estimation feature
-│   ├── skin-disease-classification/ # Skin analysis feature
-│   ├── medicine-store/           # Medicine database
-│   ├── medicine-dates/           # Medication tracking
-│   ├── prescription-analyzer/    # Prescription analysis
-│   ├── find-donor/              # Blood donor locator
-│   └── profile/                 # User profile
-├── momCareFoodAPI/              # Food recognition microservice
-├── momCareSkinAPI/              # Skin classification microservice
-├── components/                   # Reusable UI components
-├── lib/                         # Utility functions
-└── public/                      # Static assets
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🆘 Support
-
-For issues or questions, please create an issue in the repository or contact the development team.
-
----
-
-<div align="center">
-  <p>Made with ❤️ for expectant mothers</p>
-</div>
-
