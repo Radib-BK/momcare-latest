@@ -5,9 +5,10 @@
   <br/>
   <img src="https://github.com/user-attachments/assets/8b439b54-c748-48d8-b106-0b83fcf3aaf3" alt="MomCare Services" width="600"/>
   <br/>
-  ![Screenshot 2025-06-16 110516](https://github.com/user-attachments/assets/42299ef9-fe13-4eca-814b-93af93340d36)
+  <img src="https://github.com/user-attachments/assets/42299ef9-fe13-4eca-814b-93af93340d36" alt="Image Search and Semantic Searching" width="600"/>
   <br/>
-  ![image](https://github.com/user-attachments/assets/72066042-6072-4c52-86c5-08ed80302057)
+  <img src="https://github.com/user-attachments/assets/72066042-6072-4c52-86c5-08ed80302057" alt="Skin Diseases Detection" width="600"/>
+
 
 </div>
 
