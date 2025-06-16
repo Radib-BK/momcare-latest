@@ -1,6 +1,7 @@
 # MomCare - Maternal Healthcare App
 
 <div align="center">
+<<<<<<< Updated upstream
   <img src="https://github.com/user-attachments/assets/1abba4c4-fc2d-4f7d-b503-e02d527f72cb" alt="MomCare Dashboard" width="600"/>
   <br/>
   <img src="https://github.com/user-attachments/assets/8b439b54-c748-48d8-b106-0b83fcf3aaf3" alt="MomCare Services" width="600"/>
@@ -10,6 +11,38 @@
   <img src="https://github.com/user-attachments/assets/72066042-6072-4c52-86c5-08ed80302057" alt="Skin Diseases Detection" width="600"/>
 
 
+=======
+  <h3>📱 Application Screenshots</h3>
+  
+  <table>
+    <tr>
+      <td align="center">
+        <strong>🏠 Home Page</strong><br/>
+        <img src="public/HomePage.png" alt="MomCare Home Page" width="300"/>
+      </td>
+      <td align="center">
+        <strong>🍎 Calorie Estimator</strong><br/>
+        <img src="public/CaloriePage.png" alt="Calorie Estimator Page" width="300"/>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <strong>🩸 Blood Donor Finder</strong><br/>
+        <img src="public/DonorPage.png" alt="Blood Donor Page" width="300"/>
+      </td>
+      <td align="center">
+        <strong>🔬 Skin Disease Classification</strong><br/>
+        <img src="public/SkinPage.png" alt="Skin Disease Classification Page" width="300"/>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <strong>✨ Features Overview</strong><br/>
+        <img src="public/FeaturesPage.png" alt="Features Page" width="600"/>
+      </td>
+    </tr>
+  </table>
+>>>>>>> Stashed changes
 </div>
 
 A comprehensive Next.js application designed specifically for expectant mothers, providing essential healthcare services including medication tracking, prescription analysis, skin disease classification, blood donor location, and AI-powered calorie estimation.
