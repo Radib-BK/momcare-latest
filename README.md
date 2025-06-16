@@ -4,6 +4,11 @@
   <img src="https://github.com/user-attachments/assets/1abba4c4-fc2d-4f7d-b503-e02d527f72cb" alt="MomCare Dashboard" width="600"/>
   <br/>
   <img src="https://github.com/user-attachments/assets/8b439b54-c748-48d8-b106-0b83fcf3aaf3" alt="MomCare Services" width="600"/>
+  <br/>
+  ![Screenshot 2025-06-16 110516](https://github.com/user-attachments/assets/42299ef9-fe13-4eca-814b-93af93340d36)
+  <br/>
+  ![image](https://github.com/user-attachments/assets/72066042-6072-4c52-86c5-08ed80302057)
+
 </div>
 
 A comprehensive Next.js application designed specifically for expectant mothers, providing essential healthcare services including medication tracking, prescription analysis, skin disease classification, blood donor location, and AI-powered calorie estimation.
