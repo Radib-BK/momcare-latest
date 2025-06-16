@@ -1,7 +1,7 @@
 # MomCare - Maternal Healthcare App
 
 <div align="center">
-  <h3>📱 Application Screenshots</h3>
+  <h3> Application Screenshots</h3>
   
   <table>
     <tr>
