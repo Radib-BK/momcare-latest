@@ -1,78 +1,80 @@
 # MomCare - Maternal Healthcare App
 
-A comprehensive Next.js application designed specifically for expectant mothers, providing essential healthcare services including medication tracking, prescription analysis, skin disease classification, blood donor location, and the new **Calorie Estimator** feature.
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/1abba4c4-fc2d-4f7d-b503-e02d527f72cb" alt="MomCare Dashboard" width="600"/>
+  <br/>
+  <img src="https://github.com/user-attachments/assets/8b439b54-c748-48d8-b106-0b83fcf3aaf3" alt="MomCare Services" width="600"/>
+</div>
 
-## Features
+A comprehensive Next.js application designed specifically for expectant mothers, providing essential healthcare services including medication tracking, prescription analysis, skin disease classification, blood donor location, and AI-powered calorie estimation.
 
-- **Medicine Store**: Access pregnancy-safe medications database
-- **Medicine Dates**: Track medication expiry dates and set reminders
-- **Skin Disease Classification**: AI-powered skin condition analysis
-- **Prescription Analyzer**: Digital prescription analysis
-- **Calorie Estimator**: AI-powered food recognition and calorie estimation ⭐ **NEW**
-- **Find Blood Donor**: Interactive map for locating blood donors
+## 🚀 Features
 
-## 🆕 Calorie Estimator Feature
+| Service | Description |
+|---------|-------------|
+| **🏥 Medicine Store** | Access pregnancy-safe medications database |
+| **📅 Medicine Dates** | Track medication expiry dates and set reminders |
+| **🔬 Skin Disease Classification** | AI-powered skin condition analysis |
+| **📋 Prescription Analyzer** | Digital prescription analysis and management |
+| **🍎 Calorie Estimator** | AI-powered food recognition and calorie estimation |
+| **🩸 Find Blood Donor** | Interactive map for locating blood donors |
 
-The Calorie Estimator uses advanced AI to identify food from images and provide calorie estimates per 100 grams.
+## 🛠️ Tech Stack
 
-### How it works:
-1. **Upload Image**: Take a photo or upload an image of your food
-2. **AI Analysis**: Hugging Face's food-101 model identifies the food type
-3. **Calorie Data**: Spoonacular API provides nutritional information
-4. **Results**: Get food name, calories per 100g, and confidence score
+### Frontend
+- **Next.js 15** - React framework with App Router
+- **React 18** - UI library with hooks
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Utility-first CSS framework
+- **GSAP** - Animation library
+- **Radix UI** - Accessible component primitives
+- **Lucide React** - Icon library
 
-### Tech Stack:
-- **Frontend**: Next.js with React hooks and GSAP animations
-- **Backend**: FastAPI Python microservice
-- **AI Model**: Hugging Face `nateraw/food-101`
-- **Nutrition API**: Spoonacular API
-- **Image Processing**: PIL (Python Imaging Library)
+### Backend Services
+- **FastAPI** - Python web framework
+- **Hugging Face Transformers** - AI model pipeline
+- **Spoonacular API** - Nutrition data
+- **PIL** - Image processing
 
-## Installation
+## 📦 Installation
 
 ### Prerequisites
-- Node.js 18+ and npm/yarn
+- Node.js 18+ and npm
 - Python 3.8+
 - pip (Python package manager)
 
-### 1. Clone the repository
+### Quick Start
 ```bash
+# 1. Clone the repository
 git clone <repository-url>
 cd momcare-latest
-```
 
-### 2. Install Frontend Dependencies
-```bash
+# 2. Install frontend dependencies
 npm install
-```
 
-### 3. Setup Python Microservice
-```bash
-# Navigate to the Python API directory
+# 3. Setup Python microservices
 cd momCareFoodAPI
-
-# Create virtual environment (recommended)
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install Python dependencies
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
+
+cd ../momCareSkinAPI
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# 4. Return to root and start the application
+cd ..
+npm run dev-all
 ```
 
-### 4. Environment Variables
-Create a `.env.local` file in the root directory:
-```env
-# Add any other environment variables as needed
-NEXT_PUBLIC_API_URL=http://localhost:3000
-```
-
-## Running the Application
+## 🚀 Running the Application
 
 ### Option 1: Run Everything Together (Recommended)
 ```bash
 npm run dev-all
 ```
-This command starts both the Next.js frontend and Python microservice concurrently.
+Starts both Next.js frontend and Python microservices concurrently.
 
 ### Option 2: Run Separately
 
@@ -81,74 +83,29 @@ This command starts both the Next.js frontend and Python microservice concurrent
 npm run dev
 ```
 
-**Terminal 2 - Python Microservice:**
+**Terminal 2 - Food API:**
 ```bash
 npm run start-python
 ```
-or manually:
+
+**Terminal 3 - Skin API (if needed):**
 ```bash
-cd momCareFoodAPI
+cd momCareSkinAPI
 python main.py
 ```
 
-## API Endpoints
+## 🌐 API Endpoints
 
 ### Calorie Estimator
 - **POST** `/api/calorie-estimate`
   - Upload food image as multipart/form-data
   - Returns: `{ "food": "Pizza", "calories_per_100g": 266, "confidence": 0.93 }`
 
-### Python Microservice
-- **POST** `http://localhost:8000/api/calorie-estimate`
-  - Direct endpoint to Python service
-- **GET** `http://localhost:8000/`
-  - Health check endpoint
+### Python Microservices
+- **Food API**: `http://localhost:8000/api/calorie-estimate`
+- **Skin API**: `http://localhost:8001/api/skin-classification`
 
-## Project Structure
-
-```
-momcare-latest/
-├── app/                          # Next.js App Router
-│   ├── services/
-│   │   └── calorie-estimator/
-│   │       └── page.jsx          # Calorie Estimator main page
-│   │   ├── api/
-│   │   │   └── calorie-estimate/
-│   │   │       └── route.js          # Next.js API route
-│   │   └── page.jsx                  # Homepage
-│   ├── components/
-│   │   ├── Sidebar.jsx               # Navigation sidebar
-│   │   ├── ServiceCard.jsx           # Service preview cards
-│   │   └── ui/                       # Reusable UI components
-│   └── momCareFoodAPI/
-│       ├── main.py                   # FastAPI application
-│       └── requirements.txt          # Python dependencies
-└── package.json
-```
-
-## Technology Stack
-
-### Frontend
-- **Next.js 15** - React framework with App Router
-- **React 18** - UI library with hooks
-- **Tailwind CSS** - Utility-first CSS framework
-- **GSAP** - Animation library
-- **Lucide React** - Icon library
-- **Radix UI** - Accessible component primitives
-
-### Backend
-- **FastAPI** - Python web framework
-- **Uvicorn** - ASGI server
-- **Hugging Face Transformers** - AI model pipeline
-- **Spoonacular API** - Nutrition data
-- **PIL** - Image processing
-
-### Development Tools
-- **TypeScript** - Type safety
-- **Concurrently** - Run multiple commands
-- **ESLint** - Code linting
-
-## Usage
+## 📱 Usage
 
 ### Calorie Estimator
 1. Navigate to `/services/calorie-estimator`
@@ -160,46 +117,74 @@ momcare-latest/
 - Access via sidebar navigation or service cards
 - Each service provides specialized pregnancy-related healthcare tools
 
-## API Configuration
+## 🔧 Configuration
 
-The Calorie Estimator uses:
+### Environment Variables
+Create a `.env.local` file in the root directory:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
+
+### API Keys
+- **Spoonacular API**: `34827ffe67c644eabaa3459cefebfec6`
 - **Hugging Face Model**: `nateraw/food-101` (automatic download)
-- **Spoonacular API Key**: `34827ffe67c644eabaa3459cefebfec6`
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
-### Python Dependencies
-If you encounter issues with PyTorch or Transformers:
+### Common Issues
+
+**Python Dependencies:**
 ```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
 
-### Port Conflicts
-- Frontend runs on `http://localhost:3000`
-- Python service runs on `http://localhost:8000`
-- Ensure these ports are available
+**Port Conflicts:**
+- Frontend: `http://localhost:3000`
+- Food API: `http://localhost:8000`
+- Skin API: `http://localhost:8001`
 
-### CORS Issues
-The Python service is configured to allow all origins in development. For production, update the CORS settings in `momCareFoodAPI/main.py`.
+**CORS Issues:**
+Python services are configured for development. Update CORS settings in production.
 
-## Contributing
+## 📁 Project Structure
+
+```
+momcare-latest/
+├── app/                          # Next.js app directory
+│   ├── services/                 # Services overview page
+│   ├── calorie-estimator/        # Calorie estimation feature
+│   ├── skin-disease-classification/ # Skin analysis feature
+│   ├── medicine-store/           # Medicine database
+│   ├── medicine-dates/           # Medication tracking
+│   ├── prescription-analyzer/    # Prescription analysis
+│   ├── find-donor/              # Blood donor locator
+│   └── profile/                 # User profile
+├── momCareFoodAPI/              # Food recognition microservice
+├── momCareSkinAPI/              # Skin classification microservice
+├── components/                   # Reusable UI components
+├── lib/                         # Utility functions
+└── public/                      # Static assets
+```
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License.
 
-## Support
+## 🆘 Support
 
-For issues or questions, please contact the development team or create an issue in the repository. 
+For issues or questions, please create an issue in the repository or contact the development team.
 
-## Screenshots
-![image](https://github.com/user-attachments/assets/1abba4c4-fc2d-4f7d-b503-e02d527f72cb)
+---
 
-![image](https://github.com/user-attachments/assets/8b439b54-c748-48d8-b106-0b83fcf3aaf3)
+<div align="center">
+  <p>Made with ❤️ for expectant mothers</p>
+</div>
 
