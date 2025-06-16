@@ -7,31 +7,37 @@
     <tr>
       <td align="center">
         <strong>🏠 Home Page</strong><br/>
-        <img src="public/HomePage.png" alt="MomCare Home Page" width="300"/>
+        <img src="public/HomePage.png" alt="MomCare Home Page" width="600"/>
       </td>
+    </tr>
+    <tr>
       <td align="center">
         <strong>✨ Features Overview</strong><br/>
-        <img src="public/FeaturesPage.png" alt="Features Page" width="300"/>
+        <img src="public/FeaturesPage.png" alt="Features Page" width="600"/>
       </td>
     </tr>
     <tr>
       <td align="center">
         <strong>🍎 Calorie Estimator</strong><br/>
-        <img src="public/CaloriePage.png" alt="Calorie Estimator Page" width="300"/>
+        <img src="public/CaloriePage.png" alt="Calorie Estimator Page" width="600"/>
       </td>
+    </tr>
+    <tr>
       <td align="center">
         <strong>🩸 Blood Donor Finder</strong><br/>
-        <img src="public/DonorPage.png" alt="Blood Donor Page" width="300"/>
+        <img src="public/DonorPage.png" alt="Blood Donor Page" width="600"/>
       </td>
     </tr>
     <tr>
       <td align="center">
         <strong>🔬 Skin Disease Classification</strong><br/>
-        <img src="public/SkinPage.png" alt="Skin Disease Classification Page" width="300"/>
+        <img src="public/SkinPage.png" alt="Skin Disease Classification Page" width="600"/>
       </td>
+    </tr>
+    <tr>
       <td align="center">
         <strong>🔍 Image Search & Semantic Search</strong><br/>
-        <img src="https://github.com/user-attachments/assets/42299ef9-fe13-4eca-814b-93af93340d36" alt="Image Search and Semantic Searching" width="300"/>
+        <img src="https://github.com/user-attachments/assets/42299ef9-fe13-4eca-814b-93af93340d36" alt="Image Search and Semantic Searching" width="600"/>
       </td>
     </tr>
   </table>
